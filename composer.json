@@ -1,0 +1,25 @@
+{
+    "name": "sergey/blog-on-php",
+    "type": "project",
+    "authors": [
+        {
+            "name": "John Smith",
+            "email": "john@example.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "slim/psr7": "^1.5",
+        "slim/slim": "4.*",
+        "twig/twig": "^3.11",
+        "ext-PDO": "^7.3"
+    },
+
+    "autoload": {
+
+        "psr-4": {
+            "Blog\\" : "src/"
+        }
+
+    }
+}
