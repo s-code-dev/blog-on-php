@@ -1,7 +1,7 @@
 # blog_on_php_mysql
-#####Использовал минифреймворк https://www.slimframework.com slim
+##### Использовал минифреймворк https://www.slimframework.com slim
 __ 
-#####Шаблонизатор twig https://twig.symfony.com
+##### Шаблонизатор twig https://twig.symfony.com
 __
 ##### Bootstrap https://getbootstrap.com
 __ 
