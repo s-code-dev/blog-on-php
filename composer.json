@@ -12,7 +12,9 @@
         "slim/psr7": "^1.5",
         "slim/slim": "4.*",
         "twig/twig": "^3.11",
-        "ext-PDO": "^7.3"
+        "ext-PDO": "*",
+        "php-di/php-di": "7.0.0",
+        "devcoder-xyz/php-dotenv": "^3.0"
     },
 
     "autoload": {

@@ -1,45 +1,34 @@
 <?php
+use PhpDevCommunity\DotEnv;
 use Blog\Twig\AssetExtension;
 use Blog\Slim\TwigMiddleware;
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Blog\PostMapper;
+use DI\ContainerBuilder;
+use Blog\Database;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$loader = new FilesystemLoader('templates');
-$view = new Environment($loader);
+$builder = new ContainerBuilder();
+$builder->addDefinitions('config/di.php');
 
+$absolutePathToEnvFile = __DIR__ . '/.env';
 
-$config = include 'config/database.php';
-$dsn = $config['dsn'];
-$username = $config['username'];
+(new DotEnv($absolutePathToEnvFile))->load();
 
-$password = $config['password'];
-try{
-    $connection = new PDO($dsn, $username, $password);
-$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+$container = $builder->build();
 
-
-
-}catch(PDOExeption $exception){
-    echo 'Database error: ' . $exception->getMessage();
-    die();
-}
-
-
-
-
+AppFactory::setContainer($container);
 
 $app = AppFactory::create();
-
+$view = $container->get(Environment::class);
 $app->add(new TwigMiddleware($view));
 
+$connection = $container->get(Database::class)->getConnection();
 
 $app->get('/', function (Request $request, Response $response, $args) use ($view, $connection)  {
     $latestPost = new \Blog\LatestPosts($connection);
@@ -56,16 +45,28 @@ $app->get('/about', function (Request $request, Response $response, $args) use (
     return $response;
 });
 
-$app->get('/blog[/{page}]', function (Request $request, Response $response, $args) use ($view, $connection) {
-    $latestPost = new PostMapper($connection);
+$app->get('/blog[/{page}]',
+    function (Request $request, Response $response, $args)
+     use ($view, $connection) {
+        $postMapper = new PostMapper($connection);
 
-    $page = isset($args['page']) ? (int) $args['page'] : 1;
-    $limit = 2;
-    $posts = $latestPost->getList($page, $limit, 'DESC');
-    $body = $view->render('blog.html', ['posts' => $posts]);
-    $response->getBody()->write($body);
-    return $response;
-});
+        $page = isset($args['page']) ? (int) $args['page'] : 1;
+        $limit = 2;
+
+        $posts = $postMapper->getList($page, $limit, 'DESC');
+
+        $totalCount = $postMapper->getTotalCount();
+        $body = $view->render('blog.html', [
+            'posts' => $posts,
+            'pagination' => [
+                'current' => $page,
+                'paging' => ceil($totalCount / $limit),
+            ],
+        ]);
+        $response->getBody()->write($body);
+        return $response;
+    });
+
 
 
 $app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view, $connection) {

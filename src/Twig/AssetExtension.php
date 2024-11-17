@@ -17,9 +17,9 @@ class AssetExtension extends AbstractExtension
 
     /**
      * AssetExtension constructor.
-     * @param  $request
+     * @param  $request ServerRequestInterfa
      */
-    public function __construct( $request)
+    public function __construct(  $request)
     {
         $this->request = $request;
     }
@@ -51,7 +51,8 @@ class AssetExtension extends AbstractExtension
     public function getBaseUrl(): string
     {
         $params = $this->request->getServerParams();
-        return $params['REQUEST_SCHEME'] . '://' . $params['HTTP_HOST'] . '/';
+        $scheme = $params['REQUEST_SCHEME'] ?? 'http';
+        return $scheme . '://' . $params['HTTP_HOST'] . '/';
     }
 
     /**

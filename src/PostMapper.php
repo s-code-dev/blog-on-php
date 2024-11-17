@@ -15,19 +15,12 @@ class PostMapper
 
   }
 
-  public function getByUrlKey(string $urlKey): ?array
-  {
-
-    $statement = $this->connection->prepare('SELECT * FROM post WHERE url_key = :url_key ');
-    $statement->execute([
-      'url_key' => $urlKey
-    ]);
-
-    $result = $statement->fetchAll();
-
-    return array_shift($result);
-
-  }
+public function getBaseUrl(): string
+{
+    $params = $this->request->getServerParams();
+    $scheme = $params['REQUEST_SCHEME'] ?? 'http';
+    return $scheme . '://' . $params['HTTP_HOST'] . '/';
+}
 
   public function getList(int $page = 1, int $limit = 2, string $direction = 'ASC'): ?array
   {
@@ -45,6 +38,33 @@ class PostMapper
 
 
   }
+public function getTotalCount(): int
+{
+    $statement = $this->connection->prepare(
+        'SELECT count(post_id) as total FROM post'
+    );
+
+    $statement->execute();
+
+    return (int) ($statement->fetchColumn() ?? 0);
+}
+
+
+   /**
+     * @param string $urlKey
+     * @return array|null
+     */
+    public function getByUrlKey(string $urlKey): ?array
+    {
+        $statement = $this->connection->prepare('SELECT * FROM post WHERE url_key = :url_key');
+        $statement->execute([
+            'url_key' => $urlKey
+        ]);
+
+        $result = $statement->fetchAll();
+
+        return array_shift($result);
+    }
 
 }
 

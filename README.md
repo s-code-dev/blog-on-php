@@ -1,4 +1,18 @@
-# blog_on_php
-Блог на php
-Использовал минифреймворк https://www.slimframework.com slim и шаблонизатор twig https://twig.symfony.com
+# blog_on_php_mysql
+### Использовал минифреймворк https://www.slimframework.com slim
+___ 
+### Шаблонизатор twig https://twig.symfony.com
+___ 
+### Bootstrap https://getbootstrap.com
+___ 
+### Контейнер зависимостей | библиотеку php-di/php-di
+___ 
+### Использовал PDO (PHP Data Objects) — расширение в PHP, которое предоставляет 
+### универсальный интерфейс для работы с базами данных. Оно позволяет    
+### разработчикам взаимодействовать с различными системами управления базами 
+### данных (СУБД) с помощью единого API, что упрощает процесс разработки и 
+### делает код более переносимым.
+___ 
+###### Уроки: https://www.developerandcode.com
+___ 
 
