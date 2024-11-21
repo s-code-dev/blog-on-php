@@ -1,5 +1,5 @@
 ## blog_on_php_mysql
-#### __Сделал блог на php__
+#### __блог на php__
 #### Использовал:
 > ###### Минифреймворк https://www.slimframework.com slim
 > ###### Slim Framework — это легковесный PHP-фреймворк, предназначенный для 
