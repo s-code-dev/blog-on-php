@@ -50,5 +50,6 @@ ___
 > ###### реализации и специфику  каждой  СУБД.
 ___ 
 > ######  уроки: https://www.developerandcode.com
-> -s | Mail: j.wind@list.ru
+>> Автор кода: -s |
+>> Почта: ji.rain@mail.ru
 
